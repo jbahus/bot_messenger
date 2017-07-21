@@ -6,8 +6,6 @@ const controller = require('./controller/Controller.js');
 var assert = require('assert');
 var url = 'mongodb://localhost:27017/computerDB';
 
-require('./config/config.js');
-
 const nlp = new apiai({
     token: process.env.APIAI_TOKEN,
     session: 'test'
