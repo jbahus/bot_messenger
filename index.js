@@ -33,13 +33,15 @@ bot.on('message', function(payload, reply, actions) {
                     assert.equal(null, err);
                     console.log('Connected to database');
                     var cursor =  db.collection('computer').find({type: param.type_pc});
-                    var price = 1;
-                    var ram = 1;
+                    var info ={
+                        price: 1,
+                        ram:1
+                    }
                     if (param.price === '+')
-                        price = -1;
+                        info.price = -1;
                     if (param.ram === 'max ram')
-                        ram = -1;
-                    var arr = cursor.sort({ram: ram, prix: price}).toArray();
+                        info.ram = -1;
+                    var arr = cursor.sort({ram: info.ram, prix: info.price}).toArray();
                     if (arr.length > 0) {
                         console.log(arr);
                         str = str + ' ' + arr[0].name
@@ -47,17 +49,14 @@ bot.on('message', function(payload, reply, actions) {
                             + arr[0].memoire + ' Go et pour un prix de '
                             + arr[0].prix + ' euros.';
                     }
-                    reply({text: str}, function(err, info) {
-                        if (err)
-                            console.log('info:' + info);
-                    })
                         db.close();
                         console.log('database closed');
                 })
             }
-            else{
-                str = res.result.fulfillment.speech;
-            }
+            reply({text: str}, function(err, info) {
+                if (err)
+                    console.log('info:' + info);
+            })
         })
         .error(function(err) {
             console.log(err);
